@@ -1,13 +1,10 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.14;
 
 import "zeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "./SouthernBlocksCoin.sol";
 
 contract SouthernBlocksCoinCrowdsale is Crowdsale {
     
-
-    // customize the rate for each whitelisted buyer
-    mapping (address => uint256) public buyerRate;
 
     // intial rate at which tokens are offered
     uint256 public intialRate;
@@ -71,29 +68,11 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
     }
 
     function getRate() internal returns(uint256) {
-        // some early buyers are offered a discount on the crowdsale price
-        if (buyerRate[msg.sender] != 0) {
-            return buyerRate[msg.sender];
-        }
-
-        // otherwise compute the price for the auction
+       
         uint256 elapsed = block.number - startTime;
         uint256 rateRange = intialRate - endRate;
         uint256 blockRange = endTime - startTime;
 
         return intialRate.sub(rateRange.mul(elapsed).div(blockRange));
     }
-
-    // low level token purchase function
-    function buyTokens(address beneficiary) payable {
-        require(beneficiary != 0x0);
-        require(validPurchase());
-
-        uint256 weiAmount = msg.value;
-        uint256 updatedWeiRaised = weiRaised.add(weiAmount);
-
-        uint256 rate = getRate();
-    }
-
-
 }
