@@ -1,61 +1,47 @@
-pragma solidity ^0.4.14;
+pragma solidity ^0.4.15;
 
 import "zeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "./SouthernBlocksCoin.sol";
 
+
+
 contract SouthernBlocksCoinCrowdsale is Crowdsale {
     
-
-    // intial rate at which tokens are offered
-    uint256 public intialRate;
-
+    // initial rate at which tokens are offered
+    uint256 public initialRate;
     // end rate at which tokens are offered
     uint256 public endRate;
 
-    // continuous crowdsale contract
-   
-    event WalletChange(address wallet);
-
-    event intialRateChange(uint256 rate);
-
+    event InitialRateChange(uint256 rate);
     event EndRateChange(uint256 rate);
 
     function SouthernBlocksCoinCrowdsale(
         uint256 _startTime,
         uint256 _endTime,
-        uint256 _intialRate,
+        uint256 _initialRate,
         uint256 _endRate,
         address _wallet
     )
-     
-        Crowdsale(_startTime, _endTime, _intialRate, _wallet)
+
+    Crowdsale(_startTime, _endTime, _initialRate, _wallet) 
     {
-        require(_intialRate > 0);
+        require(_initialRate > 0);
         require(_endRate > 0);
 
-        intialRate = _intialRate;
+        initialRate = _initialRate;
         endRate = _endRate;
     }
-
     function createTokenContract() internal returns(MintableToken) {
         return new SouthernBlocksCoin();
     }
 
-
-    function setBuyerRate(address buyer, uint256 rate) public {
+    function setInitialRate(uint256 rate) public {
         require(rate != 0);
         require(block.number < startTime);
 
-        buyerRate[buyer] = rate;
-    }
+        initialRate = rate;
 
-    function setintialRate(uint256 rate) public {
-        require(rate != 0);
-        require(block.number < startTime);
-
-        intialRate = rate;
-
-        intialRateChange(rate);
+        InitialRateChange(rate);
     }
 
     function setEndRate(uint256 rate) public {
@@ -68,11 +54,11 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
     }
 
     function getRate() internal returns(uint256) {
-       
+     
         uint256 elapsed = block.number - startTime;
-        uint256 rateRange = intialRate - endRate;
+        uint256 rateRange = initialRate - endRate;
         uint256 blockRange = endTime - startTime;
 
-        return intialRate.sub(rateRange.mul(elapsed).div(blockRange));
+        return initialRate.sub(rateRange.mul(elapsed).div(blockRange));
     }
 }

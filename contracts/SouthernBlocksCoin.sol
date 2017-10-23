@@ -1,9 +1,9 @@
-pragma solidity ^0.4.14;
+pragma solidity ^0.4.15;
 
 import 'zeppelin-solidity/contracts/token/MintableToken.sol';
 
 contract SouthernBlocksCoin is MintableToken {
-  string public name = "SothernBlocksCoin";
-  string public symbol = "STH";
+  string public name = "SouthONE";
+  string public symbol = "SON";
   uint256 public decimals = 18;
 }
