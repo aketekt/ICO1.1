@@ -4,13 +4,15 @@ import "zeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "./SouthernBlocksCoin.sol";
 
 
-
 contract SouthernBlocksCoinCrowdsale is Crowdsale {
     
     //initial rate at which tokens are offered
     uint256 public initialRate;
     //end rate at which tokens are offered
     uint256 public endRate;
+
+      event CoinPurchase();
+
     
     //block at start and end of contract
     uint256 public startBlock = block.number;
@@ -42,9 +44,10 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
 
         uint256 elapsed = block.number - startBlock;
         uint256 rateRange = initialRate - endRate;
-        uint256 blockRange = endTime - endBlock;
+        uint256 blockRange = endBlock - startBlock;
 
-        return initialRate.sub(rateRange.mul(elapsed).div(blockRange));
+        return initialRate.sub(rateRange.mul(ela/
+        CoinPurchase();
     }
 
       // low level token purchase function
@@ -65,9 +68,9 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
 
         //mint token
         token.mint(beneficiary, tokens);
-        TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);
 
         forwardFunds();
     }
+
 
 }
