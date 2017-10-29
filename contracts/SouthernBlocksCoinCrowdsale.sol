@@ -8,15 +8,13 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
     
     //initial rate at which tokens are offered
     uint256 public initialRate;
+
     //end rate at which tokens are offered
     uint256 public endRate;
 
-      event CoinPurchase();
-
-    
     //block at start and end of contract
     uint256 public startBlock = block.number;
-    uint256 public endBlock = startBlock + 40320;
+    uint256 public endBlock = startBlock + 14500;
 
     function SouthernBlocksCoinCrowdsale(
         uint256 _startTime,
@@ -24,11 +22,9 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
         uint256 _initialRate,
         uint256 _endRate,
         address _wallet
-
     )
     Crowdsale(_startTime, _endTime, _initialRate, _wallet) 
     {
-
         require(_initialRate > 0);
         require(_endRate > 0);
 
@@ -39,18 +35,17 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
         return new SouthernBlocksCoin();
     }
 
-    //gets the token rate based on the current block
+    //get the token rate based on the current block
     function getRate() internal returns(uint256) {
 
         uint256 elapsed = block.number - startBlock;
         uint256 rateRange = initialRate - endRate;
         uint256 blockRange = endBlock - startBlock;
 
-        return initialRate.sub(rateRange.mul(ela/
-        CoinPurchase();
+        return initialRate.sub(rateRange.mul(elapsed).div(blockRange));
     }
 
-      // low level token purchase function
+    // low level token purchase function
     function buyTokens(address beneficiary) payable {
         require(beneficiary != 0x0);
         require(validPurchase());
@@ -71,6 +66,4 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
 
         forwardFunds();
     }
-
-
 }
