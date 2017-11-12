@@ -7,7 +7,7 @@ module.exports = function(deployer, network, accounts) {
   const initialRate = new web3.BigNumber(1000)
   const discount = new web3.BigNumber(50)
   const discountTime = new web3.BigNumber(30)
-  const goal = new web3.BigNumber(1000)
+  const goal = 19500000000000000000000000000000
   const wallet = accounts[0]
 
   deployer.deploy(SouthernBlocksCoinCrowdsale,startTime, endTime, initialRate, discount, discountTime, goal, wallet)
