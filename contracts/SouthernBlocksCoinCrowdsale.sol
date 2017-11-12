@@ -1,9 +1,9 @@
 pragma solidity ^0.4.15;
 
-import "zeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
+import "zeppelin-solidity/contracts/crowdsale/RefundableCrowdsale.sol";
 import "./SouthernBlocksCoin.sol";
 
-contract SouthernBlocksCoinCrowdsale is Crowdsale {
+contract SouthernBlocksCoinCrowdsale is RefundableCrowdsale {
     
     uint256 public initialRate;
     uint256 public discount;
@@ -15,8 +15,10 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
         uint256 _initialRate,
         uint256 _discount,
         uint256 _discountTime,
+        uint256 _goal,
         address _wallet
     )
+    RefundableCrowdsale(_goal)
     Crowdsale(_startTime, _endTime, _initialRate, _wallet) 
     {
         require(_initialRate > 0);
@@ -53,4 +55,5 @@ contract SouthernBlocksCoinCrowdsale is Crowdsale {
 
         forwardFunds();
     }
+
 }
